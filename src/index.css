@@ -76,29 +76,111 @@
 
   body {
     @apply bg-primary text-primary-foreground font-inter;
+    background-image: 
+      radial-gradient(at 15% 15%, rgba(0, 255, 136, 0.05) 0px, transparent 50%),
+      radial-gradient(at 85% 85%, rgba(0, 255, 136, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins font-bold;
+  }
+  
+  /* Custom scrollbar for cyberpunk theme */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-secondary/70 rounded-full;
+    border: 2px solid #1a1a1a;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-secondary;
+  }
+  
+  /* Selection color */
+  ::selection {
+    @apply bg-secondary/30 text-white;
   }
 }
 
 /* Custom component styles */
 @layer components {
   .btn-primary {
-    @apply bg-secondary text-primary font-medium rounded-md px-6 py-3 hover:opacity-90 transition-opacity;
+    @apply bg-secondary text-primary font-medium rounded-md px-6 py-3 hover:opacity-90 transition-opacity relative overflow-hidden shadow-[0_0_15px_rgba(0,255,136,0.5)];
+  }
+  
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity;
+  }
+  
+  .btn-primary:hover::before {
+    @apply opacity-10;
   }
   
   .btn-outline {
-    @apply border-2 border-secondary text-white font-medium rounded-md px-6 py-3 hover:bg-secondary hover:text-primary transition-colors;
+    @apply border-2 border-secondary text-white font-medium rounded-md px-6 py-3 hover:bg-secondary/20 hover:text-white transition-colors relative overflow-hidden;
+  }
+  
+  .btn-outline::after {
+    content: '';
+    @apply absolute inset-0 border-2 border-secondary opacity-0 transition-opacity rounded-md;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+  }
+  
+  .btn-outline:hover::after {
+    @apply opacity-100;
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary to-green-300;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary via-green-300 to-secondary;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
   }
   
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:shadow-secondary/20 hover:-translate-y-1;
+  }
+  
+  /* Neon effect for elements */
+  .neon-border {
+    @apply border border-secondary rounded-lg;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), inset 0 0 5px rgba(0, 255, 136, 0.2);
+  }
+  
+  .neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
+  }
+  
+  /* Cyberpunk background with grid lines */
+  .cyberpunk-grid {
+    background-image: 
+      linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Glitch effect for text */
+  .glitch-text {
+    position: relative;
+    animation: glitch 3s infinite alternate-reverse;
+  }
+  
+  @keyframes glitch {
+    0%, 90% { transform: none; opacity: 1; }
+    91% { transform: translateX(2px); opacity: 0.9; }
+    92% { transform: translateX(-2px); opacity: 1; }
+    93% { transform: none; opacity: 0.9; }
+    94% { transform: translateY(2px); opacity: 1; }
+    95% { transform: translateY(-2px); opacity: 0.9; }
+    96%, 100% { transform: none; opacity: 1; }
   }
 }
 
@@ -127,4 +209,49 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* Animations */
+@keyframes pulse-green {
+  0%, 100% { 
+    opacity: 1; 
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+  }
+  50% { 
+    opacity: 0.7; 
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typing-effect {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #00FF88;
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #00FF88 }
 }
