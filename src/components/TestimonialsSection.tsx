@@ -7,7 +7,7 @@ const TestimonialsSection = () => {
     {
       name: 'Sarah Johnson',
       role: 'Retail Trader',
-      content: 'Dollar Keeper's courses completely changed my approach to trading. The concepts are explained in such simple terms that even a beginner like me could understand complex strategies.',
+      content: "Dollar Keeper's courses completely changed my approach to trading. The concepts are explained in such simple terms that even a beginner like me could understand complex strategies.",
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
     },
     {
