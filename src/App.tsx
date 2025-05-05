@@ -24,6 +24,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import MyCourses from "./pages/dashboard/MyCourses";
 import Purchases from "./pages/dashboard/Purchases";
 import Settings from "./pages/dashboard/Settings";
+import Progress from "./pages/dashboard/Progress";
+import PaymentMethods from "./pages/dashboard/PaymentMethods";
+import CourseContent from "./pages/dashboard/CourseContent";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +56,9 @@ const App = () => (
             <Route path="/dashboard/my-courses" element={<MyCourses />} />
             <Route path="/dashboard/purchases" element={<Purchases />} />
             <Route path="/dashboard/settings" element={<Settings />} />
+            <Route path="/dashboard/progress" element={<Progress />} />
+            <Route path="/dashboard/payment-methods" element={<PaymentMethods />} />
+            <Route path="/dashboard/course/:id" element={<CourseContent />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

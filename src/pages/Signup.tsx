@@ -1,22 +1,46 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Signup attempt:', { name, email, password });
-    // Here you would handle registration
+    setIsSubmitting(true);
+    
+    // Simulate API call delay
+    setTimeout(() => {
+      console.log('Signup attempt:', { name, email, password });
+      
+      // Store in localStorage for demo purposes
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userName', name);
+      
+      setIsSubmitting(false);
+      
+      toast({
+        title: "Account created successfully",
+        description: "Welcome to Dollar Keeper! You're now logged in.",
+        variant: "default"
+      });
+      
+      // Redirect to dashboard
+      navigate('/dashboard');
+    }, 1500);
   };
 
   return (
@@ -121,8 +145,9 @@ const Signup = () => {
                 <Button 
                   type="submit" 
                   className="w-full bg-secondary text-primary hover:bg-secondary/90 h-12 text-base"
+                  disabled={isSubmitting}
                 >
-                  Create Account
+                  {isSubmitting ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </div>
             </form>

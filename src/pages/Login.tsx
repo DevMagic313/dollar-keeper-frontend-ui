@@ -12,27 +12,31 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
     
-    // Simulate login API call
+    // Simulate API call delay
     setTimeout(() => {
-      setIsLoading(false);
+      console.log('Login attempt:', { email, password });
       
-      // For demo purposes, always succeed
+      // Store in localStorage for demo purposes
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', email);
       
+      setIsSubmitting(false);
+      
       toast({
         title: "Login successful",
-        description: "Welcome back to Dollar Keeper",
+        description: "Welcome back to Dollar Keeper!",
+        variant: "default"
       });
       
+      // Redirect to dashboard
       navigate('/dashboard');
     }, 1500);
   };
@@ -40,18 +44,17 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-primary flex flex-col justify-center">
       <div className="absolute inset-0 z-0">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-60 -left-20 w-60 h-60 bg-secondary/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-60 h-60 bg-secondary/5 rounded-full blur-2xl"></div>
+        <div className="absolute -top-60 -left-40 w-96 h-96 bg-secondary/15 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 right-20 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
       </div>
-
+      
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <Link to="/" className="inline-block">
               <h1 className="text-4xl font-bold gradient-text">Dollar Keeper</h1>
             </Link>
-            <p className="text-gray-400 mt-2">Sign in to access your trading courses</p>
+            <p className="text-gray-400 mt-2">Sign in to your account</p>
           </div>
           
           <div className="bg-gray-900/70 backdrop-blur-sm p-8 rounded-xl border border-gray-800 shadow-xl">
@@ -76,7 +79,12 @@ const Login = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="password" className="text-gray-300 mb-1.5 block">Password</Label>
+                  <div className="flex justify-between mb-1.5">
+                    <Label htmlFor="password" className="text-gray-300">Password</Label>
+                    <Link to="/forgot-password" className="text-sm text-secondary hover:text-secondary/80">
+                      Forgot password?
+                    </Link>
+                  </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Lock className="h-5 w-5 text-gray-500" />
@@ -105,22 +113,19 @@ const Login = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="remember" />
-                    <Label htmlFor="remember" className="text-sm text-gray-400">Remember me</Label>
-                  </div>
-                  <Link to="/forgot-password" className="text-sm text-secondary hover:text-secondary/80">
-                    Forgot password?
-                  </Link>
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="remember" />
+                  <Label htmlFor="remember" className="text-sm text-gray-400">
+                    Remember me
+                  </Label>
                 </div>
                 
                 <Button 
                   type="submit" 
                   className="w-full bg-secondary text-primary hover:bg-secondary/90 h-12 text-base"
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                 >
-                  {isLoading ? 'Signing in...' : 'Sign In'}
+                  {isSubmitting ? 'Signing in...' : 'Sign In'}
                 </Button>
               </div>
             </form>

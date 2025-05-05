@@ -10,7 +10,7 @@ import {
   LogOut, 
   Menu,
   CreditCard,
-  BookCheck
+  TrendingUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -29,8 +29,8 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isCollapsed, toggle
   const navItems = [
     { icon: <Home size={20} />, label: 'Overview', path: '/dashboard' },
     { icon: <BookOpen size={20} />, label: 'My Courses', path: '/dashboard/my-courses' },
+    { icon: <TrendingUp size={20} />, label: 'Progress', path: '/dashboard/progress' },
     { icon: <ShoppingCart size={20} />, label: 'Purchase History', path: '/dashboard/purchases' },
-    { icon: <BookCheck size={20} />, label: 'Progress', path: '/dashboard/progress' },
     { icon: <CreditCard size={20} />, label: 'Payment Methods', path: '/dashboard/payment-methods' },
     { icon: <Settings size={20} />, label: 'Settings', path: '/dashboard/settings' },
   ];
@@ -38,6 +38,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isCollapsed, toggle
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
     window.location.href = '/login';
   };
   
@@ -67,7 +68,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isCollapsed, toggle
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">
-                {localStorage.getItem('userEmail') || 'User'}
+                {localStorage.getItem('userName') || localStorage.getItem('userEmail')?.split('@')[0] || 'User'}
               </p>
               <p className="text-xs text-gray-400">
                 Pro Member
