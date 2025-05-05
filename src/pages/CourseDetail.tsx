@@ -1,98 +1,171 @@
 
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  Clock, Award, BookOpen, Users, 
-  ChevronDown, Play, Check, Star, 
-  ShoppingCart
-} from 'lucide-react';
+import { Check, Clock, BookOpen, Users, Award, PlayCircle, Star, Shield } from 'lucide-react';
 
-// Mock course data (in a real app, this would come from an API)
-const courseData = {
-  '1': {
+// Mock course data
+const courses = [
+  {
     id: '1',
     title: 'Forex Trading Fundamentals',
     description: 'Learn the basics of forex trading with practical examples and strategies for beginners.',
-    longDescription: `This comprehensive course will take you from complete beginner to a confident forex trader. You'll learn how currency markets work, how to read charts, identify trends, and execute trades with proper risk management.
+    fullDescription: `
+      This comprehensive course is designed for beginners who want to understand the foreign exchange market and start trading with confidence. You'll learn everything from basic terminology to practical trading strategies that real traders use daily.
 
-    We've designed this course to be practical and easy to understand. No complex jargon or confusing concepts - just simple, effective trading knowledge that you can apply immediately.`,
+      The forex market is the largest financial market in the world, with over $6 trillion traded daily. This course will give you the knowledge you need to participate in this exciting market, understand currency pairs, leverage, and risk management.
+
+      By the end of this course, you'll have a solid foundation in forex trading and be ready to start practicing with demo accounts before moving to live trading.
+    `,
     instructor: {
       name: 'Alex Thompson',
-      bio: 'Former Wall Street forex trader with 12+ years of experience. Alex has helped over 5,000 students become successful traders.',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
+      bio: 'Professional forex trader with over 10 years of experience. Former analyst at Goldman Sachs and certified financial educator.',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
     },
     level: 'Beginner',
     price: 89.99,
-    regularPrice: 129.99,
     duration: '12 hours',
-    lectures: 45,
-    students: 3240,
+    lectures: 24,
+    students: 1250,
     rating: 4.8,
-    ratingCount: 487,
-    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
-    lastUpdated: 'November 2023',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
     features: [
-      'Lifetime access to 45 lectures',
-      'Practical examples and case studies',
-      'Trading templates and checklists',
-      'Mobile and TV access',
-      'Certificate of completion'
+      'Comprehensive introduction to forex markets',
+      'Learn to analyze currency pairs',
+      'Risk management strategies',
+      'Technical and fundamental analysis',
+      'Practice with real-world examples',
+      'Lifetime access to course updates',
+      'Course completion certificate',
+      'Community forum access'
     ],
     curriculum: [
       {
         title: 'Introduction to Forex Trading',
         lectures: [
-          { title: 'What is Forex Trading?', duration: '12:45', preview: true },
-          { title: 'Major Currency Pairs Explained', duration: '18:22', preview: false },
-          { title: 'How Forex Markets Work', duration: '15:33', preview: false }
+          { title: 'What is Forex Trading?', duration: '15:30' },
+          { title: 'The History of Forex Markets', duration: '12:45' },
+          { title: 'Why Trade Forex?', duration: '10:20' }
         ]
       },
       {
-        title: 'Technical Analysis Basics',
+        title: 'Understanding Currency Pairs',
         lectures: [
-          { title: 'Understanding Price Charts', duration: '22:15', preview: true },
-          { title: 'Support and Resistance Levels', duration: '19:47', preview: false },
-          { title: 'Trend Lines and Channels', duration: '24:18', preview: false },
-          { title: 'Key Chart Patterns', duration: '28:56', preview: false }
+          { title: 'Major, Minor and Exotic Pairs', duration: '18:15' },
+          { title: 'Reading Currency Quotes', duration: '14:30' },
+          { title: 'Pips, Lots and Leverage Explained', duration: '22:10' }
         ]
       },
       {
-        title: 'Risk Management Strategies',
+        title: 'Fundamental Analysis',
         lectures: [
-          { title: 'Position Sizing', duration: '14:35', preview: false },
-          { title: 'Setting Stop Losses', duration: '16:42', preview: false },
-          { title: 'Risk-to-Reward Ratios', duration: '20:11', preview: false }
+          { title: 'Economic Indicators', duration: '25:40' },
+          { title: 'Central Banks and Interest Rates', duration: '20:15' },
+          { title: 'Market Sentiment Analysis', duration: '16:50' }
+        ]
+      },
+      {
+        title: 'Technical Analysis',
+        lectures: [
+          { title: 'Chart Types and Timeframes', duration: '19:20' },
+          { title: 'Support and Resistance Levels', duration: '24:15' },
+          { title: 'Trend Lines and Channels', duration: '21:10' }
+        ]
+      }
+    ]
+  },
+  {
+    id: '2',
+    title: 'Advanced Stock Market Strategies',
+    description: 'Take your stock trading to the next level with advanced technical analysis and risk management.',
+    fullDescription: `
+      This advanced course is designed for intermediate traders who want to enhance their stock market trading skills. You'll learn sophisticated technical analysis methods, advanced order types, and professional risk management techniques.
+
+      The stock market offers incredible opportunities for those who understand how to analyze securities properly. In this course, you'll learn to spot high-probability setups, understand market psychology, and develop your own trading system.
+
+      By the end of this course, you'll have advanced knowledge of stock market operations and be able to implement professional-level trading strategies with proper risk controls.
+    `,
+    instructor: {
+      name: 'Sarah Williams',
+      bio: 'Portfolio manager with 15 years of Wall Street experience. Previously managed a $500M equity fund and authored two books on technical analysis.',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
+    },
+    level: 'Advanced',
+    price: 129.99,
+    duration: '16 hours',
+    lectures: 32,
+    students: 850,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1590283603385-17d1b6d19a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+    features: [
+      'Advanced technical analysis patterns',
+      'Options strategies for income and protection',
+      'Portfolio construction techniques',
+      'Volatility-based trading methods',
+      'Market psychology deep dive',
+      'Lifetime access to course updates',
+      'Personal strategy development guidance',
+      'Private community membership'
+    ],
+    curriculum: [
+      {
+        title: 'Advanced Chart Patterns',
+        lectures: [
+          { title: 'Harmonic Patterns', duration: '28:15' },
+          { title: 'Elliot Wave Theory', duration: '35:20' },
+          { title: 'Advanced Candlestick Combinations', duration: '26:45' }
+        ]
+      },
+      {
+        title: 'Risk Management',
+        lectures: [
+          { title: 'Position Sizing Techniques', duration: '22:30' },
+          { title: 'Kelly Criterion and Optimal f', duration: '24:15' },
+          { title: 'Managing Drawdowns', duration: '18:40' }
+        ]
+      },
+      {
+        title: 'Options Strategies',
+        lectures: [
+          { title: 'Protective Puts and Covered Calls', duration: '29:20' },
+          { title: 'Iron Condors and Credit Spreads', duration: '32:15' },
+          { title: 'Options for Volatility Trading', duration: '27:30' }
+        ]
+      },
+      {
+        title: 'System Development',
+        lectures: [
+          { title: 'Building Your Trading Plan', duration: '31:10' },
+          { title: 'Backtesting Methodologies', duration: '38:25' },
+          { title: 'System Optimization and Robustness', duration: '34:20' }
         ]
       }
     ]
   }
-};
+];
 
 const CourseDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [showFullDescription, setShowFullDescription] = useState(false);
-  const [selectedCurriculumSection, setSelectedCurriculumSection] = useState<number | null>(0);
+  const [activeTab, setActiveTab] = useState('overview');
   
-  // In a real app, you would fetch course data based on the ID
-  // For this demo, we'll use the mock data or show a not found message
-  const course = courseData[id || '1'];
+  // Find the course by id
+  const course = courses.find(c => c.id === id);
   
   if (!course) {
     return (
       <div className="min-h-screen bg-primary flex flex-col">
         <Navbar />
-        <div className="container mx-auto px-4 py-16 flex-grow flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Course Not Found</h1>
-            <p className="text-gray-400 mb-8">The course you're looking for doesn't exist or has been removed.</p>
+        <div className="container mx-auto px-4 py-12 flex-grow">
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-white mb-4">Course Not Found</h2>
+            <p className="text-gray-400 mb-6">The course you're looking for doesn't exist.</p>
             <Link to="/courses">
-              <Button>Browse All Courses</Button>
+              <Button className="bg-secondary text-primary hover:bg-secondary/90">
+                Browse Courses
+              </Button>
             </Link>
           </div>
         </div>
@@ -100,406 +173,324 @@ const CourseDetail = () => {
       </div>
     );
   }
-
+  
   return (
     <div className="min-h-screen bg-primary flex flex-col">
       <Navbar />
       
-      <main className="flex-grow pb-16">
-        {/* Hero Section */}
-        <section className="pt-12 pb-16 bg-gray-900 border-b border-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Course Info */}
+      <div className="container mx-auto px-4 py-12 flex-grow">
+        <div className="mb-6">
+          <Link to="/courses" className="text-secondary hover:underline flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to courses
+          </Link>
+        </div>
+        
+        {/* Course Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <div className="lg:col-span-2">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">{course.title}</h1>
+            <p className="text-gray-300 text-lg mb-6">{course.description}</p>
+            
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <div className="flex items-center">
+                <Star className="h-5 w-5 text-yellow-400 mr-1" />
+                <span className="text-white font-semibold mr-1">{course.rating}</span>
+                <span className="text-gray-400">({course.students} students)</span>
+              </div>
+              
+              <div className="bg-gray-800 h-4 w-0.5 mx-1"></div>
+              
+              <div className="flex items-center">
+                <Clock className="h-5 w-5 text-gray-400 mr-1" />
+                <span className="text-gray-300">{course.duration}</span>
+              </div>
+              
+              <div className="bg-gray-800 h-4 w-0.5 mx-1"></div>
+              
+              <div className="flex items-center">
+                <BookOpen className="h-5 w-5 text-gray-400 mr-1" />
+                <span className="text-gray-300">{course.lectures} lectures</span>
+              </div>
+              
+              <div className="bg-gray-800 h-4 w-0.5 mx-1"></div>
+              
+              <div className="flex items-center">
+                <span className="bg-secondary/20 text-secondary text-xs px-2 py-1 rounded">
+                  {course.level}
+                </span>
+              </div>
+            </div>
+            
+            <div className="flex items-center mb-6">
+              <img 
+                src={course.instructor.image} 
+                alt={course.instructor.name} 
+                className="w-12 h-12 rounded-full mr-4" 
+              />
               <div>
-                <Badge variant="secondary" className="mb-4">{course.level}</Badge>
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">{course.title}</h1>
-                <p className="text-gray-300 text-lg mb-6">{course.description}</p>
-                
-                <div className="flex items-center mb-6">
-                  <div className="flex mr-4">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`h-5 w-5 ${star <= Math.round(course.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-500'}`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-white font-medium">{course.rating}</span>
-                  <span className="text-gray-400 ml-1">({course.ratingCount} ratings)</span>
-                </div>
-                
-                <div className="flex items-center text-gray-300 mb-4">
-                  <p>Created by <span className="text-secondary">{course.instructor.name}</span></p>
-                </div>
-                
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <div className="flex items-center text-gray-300">
-                    <Clock className="h-5 w-5 text-secondary mr-2" />
-                    <span>{course.duration}</span>
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <BookOpen className="h-5 w-5 text-secondary mr-2" />
-                    <span>{course.lectures} lectures</span>
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <Award className="h-5 w-5 text-secondary mr-2" />
-                    <span>{course.level}</span>
-                  </div>
-                  <div className="flex items-center text-gray-300">
-                    <Users className="h-5 w-5 text-secondary mr-2" />
-                    <span>{course.students.toLocaleString()} students</span>
-                  </div>
-                </div>
-                
-                <div className="mb-8">
-                  <div className="flex items-center mb-2">
-                    <span className="text-2xl font-bold text-white">${course.price.toFixed(2)}</span>
-                    {course.regularPrice && (
-                      <span className="text-gray-400 line-through ml-2">${course.regularPrice.toFixed(2)}</span>
-                    )}
-                    {course.regularPrice && (
-                      <Badge className="bg-green-600 ml-2">
-                        {Math.round((1 - course.price / course.regularPrice) * 100)}% off
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <Button className="w-full h-12 text-lg bg-secondary text-primary hover:bg-secondary/90">
-                    <ShoppingCart className="h-5 w-5 mr-2" />
-                    Add to Cart
-                  </Button>
-                  <Button variant="outline" className="w-full h-12 text-lg border-secondary text-white hover:bg-secondary hover:text-primary">
-                    Buy Now
-                  </Button>
+                <p className="text-white font-medium">Instructor: {course.instructor.name}</p>
+                <p className="text-sm text-gray-400 line-clamp-1">{course.instructor.bio}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="lg:col-span-1">
+            <div className="bg-gray-900/70 rounded-xl border border-gray-800 overflow-hidden">
+              <div className="aspect-video w-full">
+                <img 
+                  src={course.image} 
+                  alt={course.title} 
+                  className="w-full h-full object-cover" 
+                />
+                <div className="relative -mt-12 flex justify-center">
+                  <button className="bg-secondary/90 text-primary rounded-full p-3 hover:bg-secondary transition-colors">
+                    <PlayCircle className="h-8 w-8" />
+                  </button>
                 </div>
               </div>
               
-              {/* Course Preview */}
-              <div className="relative">
-                <div className="rounded-lg overflow-hidden border-2 border-gray-800 shadow-xl shadow-black/20">
-                  <div className="relative aspect-video bg-gray-950">
-                    <img
-                      src={course.image}
-                      alt={course.title}
-                      className="w-full h-full object-cover opacity-90"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Button
-                        variant="outline"
-                        className="rounded-full w-16 h-16 text-white border-white hover:bg-white/20 hover:border-white"
-                      >
-                        <Play className="h-8 w-8 fill-white" />
-                      </Button>
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-3xl font-bold text-white">${course.price.toFixed(2)}</div>
+                </div>
+                
+                <Link to={`/courses/${course.id}/purchase`}>
+                  <Button className="w-full bg-secondary text-primary hover:bg-secondary/90 h-12 mb-3">
+                    Buy Now
+                  </Button>
+                </Link>
+                
+                <div className="text-center text-sm text-gray-400 mb-6">
+                  <div className="flex items-center justify-center">
+                    <Shield className="h-4 w-4 mr-1 text-secondary" />
+                    <span>30-Day Money-Back Guarantee</span>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <p className="text-white font-medium">This course includes:</p>
+                  
+                  <div className="flex items-start">
+                    <Clock className="h-5 w-5 text-gray-400 mt-0.5 mr-2" />
+                    <div>
+                      <p className="text-gray-300">{course.duration} of on-demand video</p>
                     </div>
-                    <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm p-2 rounded">
-                      <p className="text-white font-medium">Preview the first lecture for free</p>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <BookOpen className="h-5 w-5 text-gray-400 mt-0.5 mr-2" />
+                    <div>
+                      <p className="text-gray-300">{course.lectures} lectures</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <Award className="h-5 w-5 text-gray-400 mt-0.5 mr-2" />
+                    <div>
+                      <p className="text-gray-300">Certificate of completion</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <Users className="h-5 w-5 text-gray-400 mt-0.5 mr-2" />
+                    <div>
+                      <p className="text-gray-300">Access to community forum</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-
+        </div>
+        
         {/* Course Content */}
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <Tabs defaultValue="overview" className="space-y-8">
-              <TabsList className="border-b border-gray-800 w-full justify-start rounded-none bg-transparent p-0 space-x-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <Tabs 
+              defaultValue="overview" 
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
+              <TabsList className="bg-gray-900 p-1 mb-6">
                 <TabsTrigger 
-                  value="overview" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-secondary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-white"
+                  value="overview"
+                  className="data-[state=active]:bg-secondary/20 data-[state=active]:text-secondary"
                 >
                   Overview
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="curriculum" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-secondary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-white"
+                  value="curriculum"
+                  className="data-[state=active]:bg-secondary/20 data-[state=active]:text-secondary"
                 >
                   Curriculum
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="instructor" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-secondary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-white"
+                  value="instructor"
+                  className="data-[state=active]:bg-secondary/20 data-[state=active]:text-secondary"
                 >
                   Instructor
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="reviews" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-secondary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-white"
-                >
-                  Reviews
-                </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="overview" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                  <div className="lg:col-span-2">
-                    <div className="mb-8">
-                      <h2 className="text-2xl font-bold mb-4">About This Course</h2>
-                      <div className={`text-gray-300 space-y-4 ${!showFullDescription && 'line-clamp-4'}`}>
-                        <p>{course.longDescription}</p>
-                      </div>
-                      {!showFullDescription && (
-                        <button
-                          onClick={() => setShowFullDescription(true)}
-                          className="text-secondary hover:text-secondary/80 mt-2 flex items-center"
-                        >
-                          Show more <ChevronDown className="h-4 w-4 ml-1" />
-                        </button>
-                      )}
-                    </div>
-                    
-                    <div className="mb-8">
-                      <h2 className="text-2xl font-bold mb-4">What You'll Learn</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {course.features.map((feature, index) => (
-                          <div key={index} className="flex items-start">
-                            <div className="mr-2 mt-1">
-                              <Check className="h-5 w-5 text-secondary" />
-                            </div>
-                            <p className="text-gray-300">{feature}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 h-fit">
-                    <h3 className="text-xl font-bold mb-4">This course includes:</h3>
-                    <ul className="space-y-4">
-                      <li className="flex items-center text-gray-300">
-                        <BookOpen className="h-5 w-5 text-secondary mr-3" />
-                        <span>{course.lectures} lectures</span>
-                      </li>
-                      <li className="flex items-center text-gray-300">
-                        <Clock className="h-5 w-5 text-secondary mr-3" />
-                        <span>{course.duration} of video content</span>
-                      </li>
-                      <li className="flex items-center text-gray-300">
-                        <Award className="h-5 w-5 text-secondary mr-3" />
-                        <span>Certificate of completion</span>
-                      </li>
-                      <li className="flex items-center text-gray-300">
-                        <Users className="h-5 w-5 text-secondary mr-3" />
-                        <span>Access on all devices</span>
-                      </li>
-                    </ul>
-                    <div className="mt-6 space-y-4">
-                      <Button className="w-full">
-                        Add to Cart
-                      </Button>
-                      <p className="text-center text-gray-400 text-sm">
-                        30-Day Money-Back Guarantee
-                      </p>
-                    </div>
+              <TabsContent value="overview" className="mt-0">
+                <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6 mb-8">
+                  <h2 className="text-xl font-bold text-white mb-4">Course Description</h2>
+                  <div className="text-gray-300 space-y-4">
+                    {course.fullDescription.split('\n\n').map((paragraph, i) => (
+                      <p key={i}>{paragraph}</p>
+                    ))}
                   </div>
                 </div>
-              </TabsContent>
-              
-              <TabsContent value="curriculum" className="mt-6">
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">Course Content</h2>
-                  <div className="flex items-center justify-between mb-6">
-                    <p className="text-gray-300">
-                      {course.curriculum.reduce((total, section) => total + section.lectures.length, 0)} lectures • {course.duration} total length
-                    </p>
-                    <Button variant="outline" size="sm" className="text-secondary border-secondary hover:bg-secondary/10">
-                      Expand All Sections
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {course.curriculum.map((section, sectionIndex) => (
-                      <div key={sectionIndex} className="border border-gray-800 rounded-lg overflow-hidden">
-                        <div 
-                          className="bg-gray-900 p-4 flex items-center justify-between cursor-pointer"
-                          onClick={() => setSelectedCurriculumSection(
-                            selectedCurriculumSection === sectionIndex ? null : sectionIndex
-                          )}
-                        >
-                          <div>
-                            <h3 className="text-lg font-semibold text-white">{section.title}</h3>
-                            <p className="text-gray-400 text-sm">{section.lectures.length} lectures</p>
-                          </div>
-                          <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${
-                            selectedCurriculumSection === sectionIndex ? 'transform rotate-180' : ''
-                          }`} />
-                        </div>
-                        
-                        {selectedCurriculumSection === sectionIndex && (
-                          <div className="divide-y divide-gray-800">
-                            {section.lectures.map((lecture, lectureIndex) => (
-                              <div key={lectureIndex} className="p-4 flex items-center justify-between">
-                                <div className="flex items-center">
-                                  <Play className="h-5 w-5 text-gray-400 mr-3" />
-                                  <div>
-                                    <p className="text-white">{lecture.title}</p>
-                                    {lecture.preview && (
-                                      <span className="text-xs text-secondary">Preview available</span>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="text-gray-400">{lecture.duration}</div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                
+                <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6">
+                  <h2 className="text-xl font-bold text-white mb-4">What You'll Learn</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {course.features.map((feature, i) => (
+                      <div key={i} className="flex items-start">
+                        <Check className="h-5 w-5 text-secondary mt-0.5 mr-2" />
+                        <span className="text-gray-300">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               </TabsContent>
               
-              <TabsContent value="instructor" className="mt-6">
-                <div className="max-w-3xl">
-                  <h2 className="text-2xl font-bold mb-6">About the Instructor</h2>
-                  
-                  <div className="flex items-start mb-6">
-                    <Avatar className="h-16 w-16 mr-4">
-                      <AvatarImage src={course.instructor.image} alt={course.instructor.name} />
-                      <AvatarFallback>{course.instructor.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white">{course.instructor.name}</h3>
-                      <p className="text-secondary">Trading Instructor & Mentor</p>
-                    </div>
+              <TabsContent value="curriculum" className="mt-0">
+                <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6">
+                  <h2 className="text-xl font-bold text-white mb-4">Course Content</h2>
+                  <div className="text-gray-400 mb-4">
+                    {course.lectures} lectures • {course.duration} total
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div className="flex items-center text-gray-300">
-                      <Star className="h-5 w-5 text-yellow-400 mr-2" />
-                      <span>4.8 Instructor Rating</span>
-                    </div>
-                    <div className="flex items-center text-gray-300">
-                      <Users className="h-5 w-5 text-secondary mr-2" />
-                      <span>5,240+ Students</span>
-                    </div>
-                    <div className="flex items-center text-gray-300">
-                      <BookOpen className="h-5 w-5 text-secondary mr-2" />
-                      <span>8 Courses</span>
-                    </div>
-                    <div className="flex items-center text-gray-300">
-                      <Award className="h-5 w-5 text-secondary mr-2" />
-                      <span>12+ Years Trading Experience</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4 text-gray-300">
-                    <p>{course.instructor.bio}</p>
-                    <p>Through his courses, Alex focuses on practical strategies that work in real market conditions, not just theory. His teaching style breaks down complex concepts into easy-to-understand steps that students can immediately apply.</p>
+                  <div className="space-y-4">
+                    {course.curriculum.map((section, i) => (
+                      <div key={i} className="border border-gray-800 rounded-lg overflow-hidden">
+                        <div className="bg-gray-900 px-4 py-3 flex justify-between items-center">
+                          <h3 className="text-white font-medium">{section.title}</h3>
+                          <span className="text-sm text-gray-400">{section.lectures.length} lectures</span>
+                        </div>
+                        <div className="divide-y divide-gray-800">
+                          {section.lectures.map((lecture, j) => (
+                            <div key={j} className="px-4 py-3 flex justify-between items-center">
+                              <div className="flex items-center">
+                                <PlayCircle className="h-5 w-5 text-gray-500 mr-3" />
+                                <span className="text-gray-300">{lecture.title}</span>
+                              </div>
+                              <span className="text-sm text-gray-400">{lecture.duration}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </TabsContent>
               
-              <TabsContent value="reviews" className="mt-6">
-                <div className="max-w-4xl">
-                  <h2 className="text-2xl font-bold mb-6">Student Reviews</h2>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-                    <div className="col-span-1">
-                      <div className="text-center">
-                        <div className="text-5xl font-bold text-white mb-2">{course.rating}</div>
-                        <div className="flex justify-center mb-2">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star
-                              key={star}
-                              className={`h-5 w-5 ${star <= Math.round(course.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-500'}`}
-                            />
-                          ))}
+              <TabsContent value="instructor" className="mt-0">
+                <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6">
+                  <div className="flex flex-col md:flex-row items-start gap-6">
+                    <img 
+                      src={course.instructor.image} 
+                      alt={course.instructor.name} 
+                      className="w-24 h-24 rounded-full" 
+                    />
+                    <div>
+                      <h2 className="text-xl font-bold text-white mb-2">{course.instructor.name}</h2>
+                      <p className="text-gray-300 mb-4">{course.instructor.bio}</p>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center">
+                          <Star className="h-5 w-5 text-yellow-400 mr-1" />
+                          <span className="text-white">4.8 Instructor Rating</span>
                         </div>
-                        <p className="text-gray-400">Course Rating</p>
-                      </div>
-                    </div>
-                    
-                    <div className="col-span-2">
-                      <div className="space-y-2">
-                        {[5, 4, 3, 2, 1].map((rating) => {
-                          // Mock percentages for demonstration
-                          const percent = rating === 5 ? 78 : 
-                                         rating === 4 ? 15 : 
-                                         rating === 3 ? 5 : 
-                                         rating === 2 ? 1 : 1;
-                          
-                          return (
-                            <div key={rating} className="flex items-center">
-                              <div className="flex items-center w-20">
-                                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                                <span className="ml-1 text-gray-300">{rating}</span>
-                              </div>
-                              <div className="w-full bg-gray-800 rounded-full h-2.5 mx-2">
-                                <div 
-                                  className="bg-secondary h-2.5 rounded-full" 
-                                  style={{ width: `${percent}%` }}
-                                ></div>
-                              </div>
-                              <div className="text-gray-400 w-16 text-right">{percent}%</div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-6">
-                    {/* Mock reviews for demonstration */}
-                    <div className="border-b border-gray-800 pb-6">
-                      <div className="flex items-start mb-4">
-                        <Avatar className="h-10 w-10 mr-3">
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center">
-                            <h4 className="text-white font-medium">John Doe</h4>
-                            <span className="text-gray-500 text-sm ml-2">3 weeks ago</span>
-                          </div>
-                          <div className="flex my-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <Star
-                                key={star}
-                                className={`h-4 w-4 ${star <= 5 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-500'}`}
-                              />
-                            ))}
-                          </div>
+                        <div className="flex items-center">
+                          <Users className="h-5 w-5 text-gray-400 mr-1" />
+                          <span className="text-gray-300">2,500+ Students</span>
+                        </div>
+                        <div className="flex items-center">
+                          <BookOpen className="h-5 w-5 text-gray-400 mr-1" />
+                          <span className="text-gray-300">5 Courses</span>
                         </div>
                       </div>
-                      <p className="text-gray-300">This course has been incredibly valuable for my trading journey. The concepts are explained in such clear terms that I was able to start applying them right away. I've already seen improvements in my trade success rate.</p>
                     </div>
-                    
-                    <div className="border-b border-gray-800 pb-6">
-                      <div className="flex items-start mb-4">
-                        <Avatar className="h-10 w-10 mr-3">
-                          <AvatarFallback>SM</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center">
-                            <h4 className="text-white font-medium">Sarah Miller</h4>
-                            <span className="text-gray-500 text-sm ml-2">1 month ago</span>
-                          </div>
-                          <div className="flex my-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <Star
-                                key={star}
-                                className={`h-4 w-4 ${star <= 4 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-500'}`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-gray-300">Great course for beginners. Alex explains everything step by step without rushing through important concepts. The practice exercises really helped solidify my understanding.</p>
-                    </div>
-                    
-                    <Button variant="outline" className="mx-auto block">Load More Reviews</Button>
                   </div>
                 </div>
               </TabsContent>
             </Tabs>
           </div>
-        </section>
-      </main>
+          
+          <div className="lg:col-span-1">
+            <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6 mb-6">
+              <h2 className="text-xl font-bold text-white mb-4">Student Feedback</h2>
+              <div className="flex items-center mb-4">
+                <div className="text-3xl font-bold text-white mr-4">{course.rating}</div>
+                <div className="flex-grow">
+                  <div className="flex items-center">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star 
+                        key={star}
+                        className={`h-5 w-5 ${star <= Math.floor(course.rating) ? 'text-yellow-400' : 'text-gray-600'}`} 
+                        fill={star <= Math.floor(course.rating) ? 'currentColor' : 'none'}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-400 mt-1">Course Rating</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                {[5, 4, 3, 2, 1].map((rating) => (
+                  <div key={rating} className="flex items-center">
+                    <div className="w-12 text-right text-sm text-gray-400 mr-2">{rating} stars</div>
+                    <div className="flex-grow h-2 bg-gray-800 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-yellow-400" 
+                        style={{ 
+                          width: `${rating === 5 ? 75 : rating === 4 ? 20 : rating === 3 ? 5 : 0}%` 
+                        }}
+                      ></div>
+                    </div>
+                    <div className="w-12 text-left text-sm text-gray-400 ml-2">
+                      {rating === 5 ? '75%' : rating === 4 ? '20%' : rating === 3 ? '5%' : '0%'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <p className="text-sm text-gray-400 text-center">
+                {course.students} students have taken this course.
+              </p>
+            </div>
+            
+            <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6">
+              <h2 className="text-xl font-bold text-white mb-4">Share This Course</h2>
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex-1 border-gray-700 text-white hover:bg-gray-800">
+                  <svg className="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
+                  </svg>
+                  Share
+                </Button>
+                <Button variant="outline" className="flex-1 border-gray-700 text-white hover:bg-gray-800">
+                  <svg className="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                  </svg>
+                  Tweet
+                </Button>
+                <Button variant="outline" className="flex-1 border-gray-700 text-white hover:bg-gray-800">
+                  <svg className="h-5 w-5 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                  </svg>
+                  YouTube
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <Footer />
     </div>

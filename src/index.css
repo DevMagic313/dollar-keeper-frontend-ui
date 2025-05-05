@@ -77,8 +77,8 @@
   body {
     @apply bg-primary text-primary-foreground font-inter;
     background-image: 
-      radial-gradient(at 15% 15%, rgba(0, 255, 136, 0.05) 0px, transparent 50%),
-      radial-gradient(at 85% 85%, rgba(0, 255, 136, 0.05) 0px, transparent 50%);
+      radial-gradient(at 15% 15%, rgba(0, 255, 255, 0.05) 0px, transparent 50%),
+      radial-gradient(at 85% 85%, rgba(0, 255, 255, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
   }
 
@@ -114,7 +114,7 @@
 /* Custom component styles */
 @layer components {
   .btn-primary {
-    @apply bg-secondary text-primary font-medium rounded-md px-6 py-3 hover:opacity-90 transition-opacity relative overflow-hidden shadow-[0_0_15px_rgba(0,255,136,0.5)];
+    @apply bg-secondary text-primary font-medium rounded-md px-6 py-3 hover:opacity-90 transition-opacity relative overflow-hidden shadow-[0_0_15px_rgba(0,255,255,0.5)];
   }
   
   .btn-primary::before {
@@ -133,7 +133,7 @@
   .btn-outline::after {
     content: '';
     @apply absolute inset-0 border-2 border-secondary opacity-0 transition-opacity rounded-md;
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
   }
   
   .btn-outline:hover::after {
@@ -141,8 +141,8 @@
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary via-green-300 to-secondary;
-    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary via-cyan-300 to-secondary;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
   }
   
   .card-hover {
@@ -152,18 +152,18 @@
   /* Neon effect for elements */
   .neon-border {
     @apply border border-secondary rounded-lg;
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), inset 0 0 5px rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), inset 0 0 5px rgba(0, 255, 255, 0.2);
   }
   
   .neon-glow {
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
   }
   
   /* Cyberpunk background with grid lines */
   .cyberpunk-grid {
     background-image: 
-      linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+      linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
   }
   
@@ -212,14 +212,14 @@
 }
 
 /* Animations */
-@keyframes pulse-green {
+@keyframes pulse-cyan {
   0%, 100% { 
     opacity: 1; 
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
   }
   50% { 
     opacity: 0.7; 
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
   }
 }
 
@@ -234,7 +234,7 @@
 }
 
 .pulse-glow {
-  animation: pulse-green 2s infinite;
+  animation: pulse-cyan 2s infinite;
 }
 
 @keyframes typing {
@@ -245,7 +245,7 @@
 .typing-effect {
   overflow: hidden;
   white-space: nowrap;
-  border-right: 3px solid #00FF88;
+  border-right: 3px solid #00FFFF;
   animation: 
     typing 3.5s steps(40, end),
     blink-caret 0.75s step-end infinite;
@@ -253,5 +253,26 @@
 
 @keyframes blink-caret {
   from, to { border-color: transparent }
-  50% { border-color: #00FF88 }
+  50% { border-color: #00FFFF }
+}
+
+/* Dashboard styles */
+.dashboard-sidebar {
+  @apply bg-gray-900/80 border-r border-gray-800 h-screen fixed top-0 left-0 w-64 transition-all duration-300 ease-in-out z-40;
+}
+
+.dashboard-sidebar-collapsed {
+  @apply w-20;
+}
+
+.dashboard-main {
+  @apply ml-64 transition-all duration-300 ease-in-out;
+}
+
+.dashboard-main-collapsed {
+  @apply ml-20;
+}
+
+.dashboard-card {
+  @apply bg-gray-900/80 border border-gray-800 rounded-lg p-6 hover:border-secondary/50 transition-all duration-300;
 }

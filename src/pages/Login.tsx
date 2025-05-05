@@ -1,21 +1,40 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    // Here you would handle authentication
+    setIsLoading(true);
+    
+    // Simulate login API call
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      // For demo purposes, always succeed
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email);
+      
+      toast({
+        title: "Login successful",
+        description: "Welcome back to Dollar Keeper",
+      });
+      
+      navigate('/dashboard');
+    }, 1500);
   };
 
   return (
@@ -99,8 +118,9 @@ const Login = () => {
                 <Button 
                   type="submit" 
                   className="w-full bg-secondary text-primary hover:bg-secondary/90 h-12 text-base"
+                  disabled={isLoading}
                 >
-                  Sign In
+                  {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </div>
             </form>
