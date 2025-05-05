@@ -60,7 +60,7 @@ const FAQ = () => {
         },
         {
           question: 'Do you offer refunds?',
-          answer: 'Yes, we offer a 30-day money-back guarantee if you're not satisfied with your purchase.'
+          answer: "Yes, we offer a 30-day money-back guarantee if you're not satisfied with your purchase."
         },
         {
           question: 'Are there any hidden fees?',
