@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,12 +9,25 @@ import CourseCard from '@/components/CourseCard';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Search, Filter, SortAsc, Grid, List } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 const Courses = () => {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Mock course data
+  // Filter states
+  const [levels, setLevels] = useState<{[key: string]: boolean}>({
+    beginner: false,
+    intermediate: false,
+    advanced: false
+  });
+  const [priceRange, setPriceRange] = useState<{min: string, max: string}>({
+    min: '',
+    max: ''
+  });
+  const [sortBy, setSortBy] = useState('featured');
+  
+  // Mock course data with fixed image URLs
   const courses = [
     {
       id: '1',
@@ -24,7 +37,7 @@ const Courses = () => {
       level: 'Beginner',
       price: 89.99,
       duration: '12 hours',
-      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '2',
@@ -34,7 +47,7 @@ const Courses = () => {
       level: 'Advanced',
       price: 129.99,
       duration: '16 hours',
-      image: 'https://images.unsplash.com/photo-1590283603385-17d1b6d19a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1590283603385-17d1b6d19a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '3',
@@ -44,7 +57,7 @@ const Courses = () => {
       level: 'Intermediate',
       price: 99.99,
       duration: '14 hours',
-      image: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '4',
@@ -54,7 +67,7 @@ const Courses = () => {
       level: 'Advanced',
       price: 149.99,
       duration: '20 hours',
-      image: 'https://images.unsplash.com/photo-1642543492855-9e1dc49fe05c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1642543492855-9e1dc49fe05c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '5',
@@ -64,7 +77,7 @@ const Courses = () => {
       level: 'Beginner',
       price: 79.99,
       duration: '10 hours',
-      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '6',
@@ -74,16 +87,96 @@ const Courses = () => {
       level: 'Intermediate',
       price: 109.99,
       duration: '15 hours',
-      image: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     }
   ];
 
-  // Filter courses based on search query
-  const filteredCourses = courses.filter(course => 
-    course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    course.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    course.instructor.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Handle level filter changes
+  const handleLevelChange = (level: string, checked: boolean) => {
+    setLevels(prev => ({
+      ...prev,
+      [level.toLowerCase()]: checked
+    }));
+  };
+
+  // Handle price range changes
+  const handlePriceChange = (type: 'min' | 'max', value: string) => {
+    setPriceRange(prev => ({
+      ...prev,
+      [type]: value
+    }));
+  };
+
+  // Apply filters function
+  const applyFilters = () => {
+    // Validation for price range
+    if (priceRange.min && priceRange.max && Number(priceRange.min) > Number(priceRange.max)) {
+      toast({
+        title: "Invalid price range",
+        description: "Minimum price cannot be greater than maximum price",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    toast({
+      title: "Filters applied",
+      description: "The course list has been filtered according to your preferences"
+    });
+  };
+
+  // Reset filters function
+  const resetFilters = () => {
+    setLevels({
+      beginner: false,
+      intermediate: false,
+      advanced: false
+    });
+    setPriceRange({
+      min: '',
+      max: ''
+    });
+    toast({
+      title: "Filters reset",
+      description: "All filters have been cleared"
+    });
+  };
+
+  // Filter courses based on search query, levels and price
+  const filteredCourses = courses.filter(course => {
+    // Search filter
+    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          course.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Level filter
+    const activeLevelFilters = Object.values(levels).some(value => value);
+    const matchesLevel = activeLevelFilters 
+      ? levels[course.level.toLowerCase()]
+      : true; // If no level filters active, show all
+    
+    // Price filter
+    const minPrice = priceRange.min ? Number(priceRange.min) : 0;
+    const maxPrice = priceRange.max ? Number(priceRange.max) : Infinity;
+    const matchesPrice = course.price >= minPrice && course.price <= maxPrice;
+    
+    return matchesSearch && matchesLevel && matchesPrice;
+  });
+
+  // Sort courses based on selection
+  const sortedCourses = [...filteredCourses].sort((a, b) => {
+    switch(sortBy) {
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'newest':
+        // Mocked sorting by ID since we don't have actual dates
+        return parseInt(b.id) - parseInt(a.id);
+      default:
+        return 0; // featured - maintain original order
+    }
+  });
 
   return (
     <div className="min-h-screen bg-primary flex flex-col">
@@ -122,15 +215,27 @@ const Courses = () => {
                   <Label className="text-gray-300 mb-1.5 block">Level</Label>
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <Checkbox id="level-beginner" />
+                      <Checkbox 
+                        id="level-beginner" 
+                        checked={levels.beginner} 
+                        onCheckedChange={(checked) => handleLevelChange('beginner', checked === true)}
+                      />
                       <Label htmlFor="level-beginner" className="ml-2 text-gray-400">Beginner</Label>
                     </div>
                     <div className="flex items-center">
-                      <Checkbox id="level-intermediate" />
+                      <Checkbox 
+                        id="level-intermediate" 
+                        checked={levels.intermediate}
+                        onCheckedChange={(checked) => handleLevelChange('intermediate', checked === true)}
+                      />
                       <Label htmlFor="level-intermediate" className="ml-2 text-gray-400">Intermediate</Label>
                     </div>
                     <div className="flex items-center">
-                      <Checkbox id="level-advanced" />
+                      <Checkbox 
+                        id="level-advanced" 
+                        checked={levels.advanced}
+                        onCheckedChange={(checked) => handleLevelChange('advanced', checked === true)}
+                      />
                       <Label htmlFor="level-advanced" className="ml-2 text-gray-400">Advanced</Label>
                     </div>
                   </div>
@@ -143,16 +248,31 @@ const Courses = () => {
                       type="number"
                       placeholder="Min"
                       className="bg-gray-800/50 border-gray-700 text-white"
+                      value={priceRange.min}
+                      onChange={(e) => handlePriceChange('min', e.target.value)}
+                      min="0"
                     />
                     <Input
                       type="number"
                       placeholder="Max"
                       className="bg-gray-800/50 border-gray-700 text-white"
+                      value={priceRange.max}
+                      onChange={(e) => handlePriceChange('max', e.target.value)}
+                      min="0"
                     />
                   </div>
                 </div>
                 
-                <Button className="w-full">Apply Filters</Button>
+                <div className="flex flex-col space-y-2">
+                  <Button className="w-full" onClick={applyFilters}>Apply Filters</Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-gray-700" 
+                    onClick={resetFilters}
+                  >
+                    Reset Filters
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -161,17 +281,21 @@ const Courses = () => {
           <div className="w-full">
             <div className="flex justify-between items-center mb-6">
               <div className="text-gray-400">
-                Showing {filteredCourses.length} courses
+                Showing {sortedCourses.length} courses
               </div>
               
               <div className="flex items-center gap-2">
                 <div className="flex items-center mr-4">
                   <SortAsc className="h-5 w-5 text-gray-500 mr-1" />
-                  <select className="bg-gray-800 border-gray-700 text-white rounded-md text-sm">
-                    <option>Featured</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Newest</option>
+                  <select 
+                    className="bg-gray-800 border-gray-700 text-white rounded-md text-sm"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                  >
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest</option>
                   </select>
                 </div>
                 
@@ -195,17 +319,20 @@ const Courses = () => {
               </div>
             </div>
             
-            {filteredCourses.length === 0 ? (
+            {sortedCourses.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-400 mb-4">No courses found. Try a different search term.</p>
-                <Button onClick={() => setSearchQuery('')}>Clear Search</Button>
+                <p className="text-gray-400 mb-4">No courses found. Try different filters or search terms.</p>
+                <Button onClick={() => {
+                  setSearchQuery('');
+                  resetFilters();
+                }}>Clear All Filters</Button>
               </div>
             ) : (
               <div className={view === 'grid' 
                 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" 
                 : "space-y-4"
               }>
-                {filteredCourses.map(course => (
+                {sortedCourses.map(course => (
                   <CourseCard key={course.id} {...course} />
                 ))}
               </div>
