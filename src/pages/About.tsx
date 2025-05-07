@@ -16,7 +16,7 @@ const About = () => {
         {/* Hero Section */}
         <section className="py-16 md:py-24 relative overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-10"></div>
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center opacity-10"></div>
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary"></div>
           </div>
           

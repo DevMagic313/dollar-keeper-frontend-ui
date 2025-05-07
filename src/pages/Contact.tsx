@@ -48,9 +48,12 @@ const Contact = () => {
         {/* Hero Section */}
         <section className="py-16 md:py-24 relative overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
-            <div className="absolute top-60 -left-20 w-60 h-60 bg-secondary/5 rounded-full blur-3xl"></div>
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center opacity-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary"></div>
           </div>
+          
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-60 -left-20 w-60 h-60 bg-secondary/5 rounded-full blur-3xl"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
