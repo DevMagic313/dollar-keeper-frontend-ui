@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 @tailwind base;
@@ -274,5 +273,20 @@
 }
 
 .dashboard-card {
-  @apply bg-gray-900/80 border border-gray-800 rounded-lg p-6 hover:border-secondary/50 transition-all duration-300;
+  @apply bg-gray-900/80 border border-gray-800 rounded-lg p-4 md:p-6 hover:border-secondary/50 transition-all duration-300;
+}
+
+/* Mobile dashboard styles */
+@media (max-width: 768px) {
+  .dashboard-sidebar {
+    @apply w-64;
+  }
+  
+  .dashboard-main {
+    @apply ml-0;
+  }
+  
+  .dashboard-main-collapsed {
+    @apply ml-0;
+  }
 }
