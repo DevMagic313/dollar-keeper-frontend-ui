@@ -181,6 +181,16 @@
     95% { transform: translateY(-2px); opacity: 0.9; }
     96%, 100% { transform: none; opacity: 1; }
   }
+  
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
 }
 
 /* Video player customizations to prevent right-click and other content protection */
