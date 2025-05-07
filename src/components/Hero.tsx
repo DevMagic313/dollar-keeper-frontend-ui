@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 const Hero = () => {
   return (
     <div className="relative overflow-hidden bg-primary pt-16 pb-24 sm:pb-32">
-      {/* Background elements */}
+      {/* Background elements with hero image */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-1.2.1&auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary"></div>
       </div>
       

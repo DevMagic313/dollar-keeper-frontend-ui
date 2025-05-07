@@ -1,4 +1,3 @@
-
 import React from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Link } from 'react-router-dom';
@@ -48,7 +47,7 @@ const Dashboard = () => {
       title: 'Advanced Stock Market Strategies',
       progress: 35,
       lastAccessed: 'Yesterday',
-      image: 'https://images.unsplash.com/photo-1590283603385-17d1b6d19a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+      image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
     },
     {
       id: '3',

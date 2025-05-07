@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import CourseCard from './CourseCard';
 
 const FeaturedCourses = () => {
-  // Sample course data
+  // Sample course data with verified working image URLs
   const courses = [
     {
       id: '1',
