@@ -67,7 +67,8 @@ const Courses = () => {
       level: 'Advanced',
       price: 149.99,
       duration: '20 hours',
-      image: 'https://images.unsplash.com/photo-1642543492855-9e1dc49fe05c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+      // Updated image URL - this was potentially broken
+      image: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '5',
@@ -87,7 +88,8 @@ const Courses = () => {
       level: 'Intermediate',
       price: 109.99,
       duration: '15 hours',
-      image: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+      // Updated image URL - this was potentially broken
+      image: 'https://images.unsplash.com/photo-1560221328-12fe60f83ab8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     }
   ];
 
