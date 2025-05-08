@@ -24,7 +24,8 @@ const FeaturedCourses = () => {
       level: 'Beginner',
       price: 89.99,
       duration: '8 Hours',
-      image: 'https://images.unsplash.com/photo-1590283603385-17d1b6d19a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+      // Updated image URL to match the one in Courses.tsx
+      image: 'https://images.unsplash.com/photo-1468254095679-bbcba94a7066?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '3',

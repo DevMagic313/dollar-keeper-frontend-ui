@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -47,7 +46,8 @@ const Courses = () => {
       level: 'Advanced',
       price: 129.99,
       duration: '16 hours',
-      image: 'https://images.unsplash.com/photo-1590283603385-17d1b6d19a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+      // Updated image URL to a different working one
+      image: 'https://images.unsplash.com/photo-1468254095679-bbcba94a7066?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
     },
     {
       id: '3',
@@ -249,7 +249,7 @@ const Courses = () => {
                     <Input
                       type="number"
                       placeholder="Min"
-                      className="bg-gray-800/50 border-gray-700 text-white"
+                      className="bg-gray-800 border-gray-700 text-white"
                       value={priceRange.min}
                       onChange={(e) => handlePriceChange('min', e.target.value)}
                       min="0"
@@ -257,7 +257,7 @@ const Courses = () => {
                     <Input
                       type="number"
                       placeholder="Max"
-                      className="bg-gray-800/50 border-gray-700 text-white"
+                      className="bg-gray-800 border-gray-700 text-white"
                       value={priceRange.max}
                       onChange={(e) => handlePriceChange('max', e.target.value)}
                       min="0"
