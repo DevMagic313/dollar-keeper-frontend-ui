@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -77,7 +76,7 @@ const courses = [
       {
         title: 'Major, Minor and Exotic Pairs',
         duration: '18:15',
-        description: 'Learn about different types of currency pairs and how they're categorized in the forex market.'
+        description: 'Learn about different types of currency pairs and how they are categorized in the forex market.'
       }
     ]
   },
@@ -183,7 +182,7 @@ const courses = [
       {
         title: 'Bitcoin: The First Cryptocurrency',
         duration: '22:10',
-        description: 'Learn about Bitcoin's history, features, and why it remains the dominant cryptocurrency.'
+        description: 'Learn about Bitcoin\'s history, features, and why it remains the dominant cryptocurrency.'
       }
     ]
   }
