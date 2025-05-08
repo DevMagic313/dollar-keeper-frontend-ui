@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   BookOpen, 
   User, 
@@ -13,6 +12,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface DashboardSidebarProps {
   isCollapsed: boolean;
@@ -21,6 +21,8 @@ interface DashboardSidebarProps {
 
 const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isCollapsed, toggleSidebar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -39,7 +41,15 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isCollapsed, toggle
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userName');
-    window.location.href = '/login';
+    
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out from your account",
+      variant: "default"
+    });
+    
+    // Redirect to home page instead of login
+    navigate('/');
   };
   
   return (

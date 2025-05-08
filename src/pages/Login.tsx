@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
@@ -50,12 +50,15 @@ const Login = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-block">
-              <h1 className="text-4xl font-bold gradient-text">Dollar Keeper</h1>
+          <div className="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8">
+            <Link to="/" className="inline-flex items-center text-secondary hover:text-secondary/80 mb-4 md:mb-0">
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span>Back to Home</span>
             </Link>
-            <p className="text-gray-400 mt-2">Sign in to your account</p>
+            <h1 className="text-4xl font-bold gradient-text">Dollar Keeper</h1>
           </div>
+          
+          <p className="text-gray-400 text-center mb-6">Sign in to your account</p>
           
           <div className="bg-gray-900/70 backdrop-blur-sm p-8 rounded-xl border border-gray-800 shadow-xl">
             <form onSubmit={handleSubmit}>
